@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Your Site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .payment-container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .payment-details {
+            flex: 1;
+            padding: 40px;
+            background-color: #f9fafc;
+        }
+        
+        .payment-form {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: #2d3748;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            margin-right: 10px;
+            color: #4f46e5;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        
+        .order-summary {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 30px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 18px;
+            color: #2d3748;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: #c7d2fe;
+        }
+        
+        .payment-method.active {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+        }
+        
+        .payment-method i {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #718096;
+        }
+        
+        .payment-method.active i {
+            color: #4f46e5;
+        }
+        
+        .payment-method span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .security-note {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f9ff;
+            border-radius: 10px;
+            color: #0369a1;
+            font-size: 14px;
+        }
+        
+        .security-note i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .pay-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+        
+        .pay-button:active {
+            transform: translateY(0);
+        }
+        
+        .pay-button i {
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-container {
+                flex-direction: column;
+            }
+            
+            .payment-details, .payment-form {
+                padding: 30px;
+            }
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .success-message i {
+            font-size: 60px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        .success-message h2 {
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-details">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <h1>SecureCheckout</h1>
+            </div>
+            
+            <h2>Order Summary</h2>
+            <p class="subtitle">Review your purchase details before payment</p>
+            
+            <div class="order-summary">
+                <div class="order-item">
+                    <span>Premium Web Hosting (1 year)</span>
+                    <span>$129.99</span>
+                </div>
+                <div class="order-item">
+                    <span>SSL Certificate</span>
+                    <span>$49.99</span>
+                </div>
+                <div class="order-item">
+                    <span>Domain Registration</span>
+                    <span>$12.99</span>
+                </div>
+                <div class="order-item">
+                    <span>Tax</span>
+                    <span>$15.42</span>
+                </div>
+                <div class="total">
+                    <span>Total Amount</span>
+                    <span>$208.39</span>
+                </div>
+            </div>
+            
+            <div class="security-note">
+                <i class="fas fa-shield-alt"></i>
+                <span>Your payment information is encrypted and secure. We never store your credit card details.</span>
+            </div>
+        </div>
+        
+        <div class="payment-form">
+            <h2>Payment Details</h2>
+            <p class="subtitle">Enter your payment information to complete the purchase</p>
+            
+            <div class="payment-methods">
+                <div class="payment-method active" id="card-method">
+                    <i class="far fa-credit-card"></i>
+                    <span>Credit Card</span>
+                </div>
+                <div class="payment-method" id="paypal-method">
+                    <i class="fab fa-paypal"></i>
+                    <span>PayPal</span>
+                </div>
+                <div class="payment-method" id="applepay-method">
+                    <i class="fab fa-apple-pay"></i>
+                    <span>Apple Pay</span>
+                </div>
+            </div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" id="cardName" placeholder="John Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="4" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" required>
+                        <option value="">Select Country</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                        <option value="DE">Germany</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="zipCode">ZIP / Postal Code</label>
+                    <input type="text" id="zipCode" placeholder="90210" required>
+                </div>
+                
+                <button type="submit" class="pay-button">
+                    <i class="fas fa-lock"></i> Pay $208.39
+                </button>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h2>Payment Successful!</h2>
+                <p>Your payment has been processed successfully. A confirmation email has been sent to you.</p>
+                <p>Thank you for your purchase!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Format card number with spaces
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = formatted.substring(0, 19);
+        });
+        
+        // Format expiry date as MM/YY
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            } else {
+                e.target.value = value;
+            }
+        });
+        
+        // Only allow numbers for CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+        
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const cardName = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const country = document.getElementById('country').value;
+            const zipCode = document.getElementById('zipCode').value;
+            
+            // Basic validation
+            if (!cardName || !cardNumber || !expiryDate || !cvv || !country || !zipCode) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate payment processing
+            const payButton = document.querySelector('.pay-button');
+            const originalText = payButton.innerHTML;
+            payButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            payButton.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Show success message
+                document.getElementById('paymentForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // In a real application, you would submit the payment data to your server
+                console.log('Payment details to be sent to server:', {
+                    cardName,
+                    cardNumber: cardNumber.replace(/\s/g, ''),
+                    expiryDate,
+                    cvv,
+                    country,
+                    zipCode,
+                    amount: 208.39
+                });
+                
+                // Reset button (though form is hidden now)
+                payButton.innerHTML = originalText;
+                payButton.disabled = false;
+            }, 2000);
+        });
+        
+        // Initialize with credit card as active
+        document.getElementById('card-method').classList.add('active');
+    </script>
+</body>
+</html>
